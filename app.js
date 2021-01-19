@@ -32,9 +32,11 @@ var CalculatController = (function(){
          extCost = obj.inputExtCost / 23;
          totalCost = totalMilCost + extCost;
          overDue = obj.inputCashPament - totalCost;
-       
-             id = data.length + 1;
-     
+        if(data.length > 0){
+             id = (data.length - 1) + 1;
+        }else{
+            id = 0;
+        };
         
        
 
@@ -148,7 +150,7 @@ var Controller = (function(CalCtrl, UICtrl){
         var input = UICtrl.getInput();
        if(input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost) && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) ){
                 console.log(input);
-                // CalCtrl.adItem(input);
+                CalCtrl.adItem(input);
                 var cost = CalCtrl.calTolCost(input);
                 UICtrl.addListItem(cost, input);
                 CalCtrl.addData(cost);
