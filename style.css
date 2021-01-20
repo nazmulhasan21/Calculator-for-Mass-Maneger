@@ -1,4 +1,18 @@
 body{
     margin: auto;
-    background: aqua;
+    background:url(slider2.jpeg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: aqua;
+}
+* {
+    color:#00ffa1;
+    
+}
+.form-control{
+    background: transparent;
+}
+.btn{
+    color: #00ffa1;
 }
