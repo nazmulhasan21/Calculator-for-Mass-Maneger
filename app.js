@@ -137,7 +137,7 @@ var Controller = (function(CalCtrl, UICtrl){
                  if(event.keyCode === 13 || event.which === 13){
                     CtrlAddItem();
 
-                     }
+                     };
        });
     };
        
@@ -151,7 +151,7 @@ var Controller = (function(CalCtrl, UICtrl){
                 var cost = CalCtrl.calTolCost(input);
                 UICtrl.addListItem(cost, input);
                 CalCtrl.addData(cost);
-       }
+       };
 
        };
        
