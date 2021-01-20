@@ -147,7 +147,6 @@ var Controller = (function(CalCtrl, UICtrl){
 
         var input = UICtrl.getInput();
        if(input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost) && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) ){
-                console.log(input);
                 var cost = CalCtrl.calTolCost(input);
                 UICtrl.addListItem(cost, input);
                 CalCtrl.addData(cost);
