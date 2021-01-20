@@ -3,44 +3,99 @@
 var CalculatController = (function(){
     
 
+    var Input = function(obj){
+        this.personMil = obj.inputPerSonMil;
+        this.totalMil = obj.inputTotalMil;
+        this.cash = obj.inputCashPament;
+    };
 
-   var  data = [];
+    var Cost = function(obj){
+        this.fixedMil = obj.fixedMil;
+        this.totalMilCost = obj.totalMilCost;
+        this.extCost = obj.extCost;
+        this.totalCost = obj.totalCost;
+    };
+    
+
+
+   var  data = {
+       allData:{
+           cost:[],
+           input:[]
+       }
+   };
+   var list = [];
 
    return{
-       total: function(input){
 
-        // var totalMil = 
+
+
+       addData: function(obj, input){
+
+        newInput = new Input(input)
+
+        newCost  = new Cost(obj)
+
+
 
         
-
-        
+        data.allData.input.push(newInput);
+        data.allData.cost.push(newCost);
+        list.push(input);
+       
 
        },
 
-       addData: function(obj){
 
-        data.push(obj);
+       calTotal: function(){
 
-       },
+        var totalPsMil = 0;
+        var totalFxMil = 0;           
+        var totalMilCost = 0;
+        var totalExtCost = 0;
+        var totalCost = 0;
+        var totalCash = 0;  
+  
+
+            data.allData.input.forEach( el => { totalPsMil += el.personMil;});
+
+            data.allData.input.forEach( el => {    totalCash += el.cash;   });
+
+            data.allData.cost.forEach( el => {   totalFxMil += el.fixedMil; });
+
+            data.allData.cost.forEach( el => {  totalMilCost += el.totalMilCost; });
+            data.allData.cost.forEach( el => { totalExtCost += el.extCost; });
+
+            data.allData.cost.forEach( el => { totalCost += el.totalCost; });
+        return{
+            totalPsMil: totalPsMil,
+            totalFxMil: totalFxMil,
+            totalMilCost: totalMilCost,
+            totalExtCost: totalExtCost,
+            totalCost: totalCost,
+            totalCash: totalCash
+
+        }
+
+ },
 
         calTolCost: function(obj){
-            var totalMarCost, milRat, totalMilCost, totalMilCost, extCost, totalCost, overDue, id;
+            var totalMarCost, milRat, fixedMil, totalMilCost, totalMilCost, extCost, totalCost, overDue, id;
 
-         totalMarCost = obj.inputTotalMarCost + obj.inputTotalSmlCost;
-         milRat = totalMarCost / obj.inputTotalMil;
-         totalMilCost = milRat * obj.inputPerSonMil;
-         extCost = obj.inputExtCost / 23;
-         totalCost = totalMilCost + extCost;
-         overDue = obj.inputCashPament - totalCost;
-       
-             id = data.length + 1;
-     
-        
-       
+                totalMarCost = obj.inputTotalMarCost + obj.inputTotalSmlCost;
+                milRat = totalMarCost / obj.inputTotalMil;
+                fixedMil = (obj.inputPerSonMil >64 ? fixedMil = obj.inputPerSonMil : fixedMil = 65);
+                totalMilCost = milRat * (obj.inputPerSonMil > 64 ? obj.inputPerSonMil = obj.inputPerSonMil : 65);
+                extCost = obj.inputExtCost / 23;
+                totalCost = totalMilCost + extCost;
+                overDue = obj.inputCashPament - totalCost;
+
+                id = list.length + 1;
 
         return{
             totalMarCost: totalMarCost,
             milRat: milRat,
+            fixedMil: fixedMil,
             totalMilCost: totalMilCost,
             extCost: extCost,
             totalCost: totalCost,
@@ -50,6 +105,10 @@ var CalculatController = (function(){
         };
     },
 
+
+    
+
+     
 
        texsting: function(){
         console.log(data);
@@ -81,7 +140,7 @@ var UIController = (function(){
         total_cost: ".total_cost"
 
     };
-    return{
+    return{ 
         getInput: function(){
             return{
                 inputName: document.querySelector(DOMString.inputName).value,
@@ -96,13 +155,15 @@ var UIController = (function(){
         },
    
         addListItem:function(obj, input){
+           
             var html, newHtml;
-            html = '<tr id="%id%"><td>%id%</td><td class="fname">%fname%</td><td class="fixed_mil">%fixed_mil%</td><td class="mil_rat">%mil_rat%</td><td class="total_mil_cost">%total_mil_cost%</td><td class="exta_cost">%exta_cost%</td><td class="total_cost">%total_cost%</td><td class ="cash_pament"> %cashpament% </td><td class ="over_due"> %overdue% </td></tr>'
+            html = '<tr id="%id%"><td>%id%</td><td class="fname">%fname%</td><td class="persone_mil">%persone_mil% </td><td class="fixed_mil">%fixed_mil%</td><td class="mil_rat">%mil_rat%</td><td class="total_mil_cost">%total_mil_cost%</td><td class="exta_cost">%exta_cost%</td><td class="total_cost">%total_cost%</td><td class ="cash_pament"> %cashpament% </td><td class ="over_due"> %overdue% </td></tr>'
 
             newHtml = html.replace("%id%", obj.id);
             newHtml = newHtml.replace("%id%", obj.id);
             newHtml = newHtml.replace("%fname%", input.inputName);
-            newHtml = newHtml.replace("%fixed_mil%", input.inputPerSonMil);
+            newHtml = newHtml.replace("%persone_mil%", input.inputPerSonMil);
+            newHtml = newHtml.replace("%fixed_mil%", obj.fixedMil);
             newHtml = newHtml.replace("%mil_rat%", obj.milRat.toFixed(2));
             newHtml = newHtml.replace("%total_mil_cost%", obj.totalMilCost.toFixed(2));
             newHtml = newHtml.replace("%exta_cost%", obj.extCost.toFixed(2));            
@@ -112,6 +173,22 @@ var UIController = (function(){
 
             document.querySelector(DOMString.list_contaner).insertAdjacentHTML("beforeend", newHtml);
         },
+
+        displayTotalCost: function(obj, id){
+
+           
+            document.querySelector(".mamber").textContent= id.id;
+             document.querySelector(".personeMil").textContent= obj.totalPsMil;
+            document.querySelector(".totalFixMil").textContent= obj.totalFxMil;
+             document.querySelector(".totalMil_cost").textContent= Math.round(obj.totalMilCost);
+             document.querySelector(".total_extal_cost").textContent= Math.round(obj.totalExtCost); 
+             document.querySelector(".totalCost").textContent= Math.round(obj.totalCost); 
+             document.querySelector(".total_cash").textContent= obj.totalCash; 
+             //document.querySelector(".total_overdue").textContent= obj.incpercentage + "%";             
+                          
+        
+
+         }
    
     };
 
@@ -147,11 +224,17 @@ var Controller = (function(CalCtrl, UICtrl){
 
         var input = UICtrl.getInput();
        if(input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost) && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) ){
-                var cost = CalCtrl.calTolCost(input);
-                UICtrl.addListItem(cost, input);
-                CalCtrl.addData(cost);
+               
        };
 
+       var cost = CalCtrl.calTolCost(input);
+       UICtrl.addListItem(cost, input);
+       CalCtrl.addData(cost, input);
+       var total = CalCtrl.calTotal();
+       
+
+       UICtrl.displayTotalCost(total, cost);
+        console.log(total);
        };
        
 
