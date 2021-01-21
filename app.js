@@ -15,7 +15,7 @@ var CalculatController = (function(){
         this.totalMilCost = obj.totalMilCost;
         this.extCost = obj.extCost;
         this.totalCost = obj.totalCost;
-        this.totalOverDue = obj.overDue;
+        this.overDue = obj.overDue;
         this.endingRiceBal = obj.endingRiceBal;
     };
     
@@ -31,6 +31,28 @@ var CalculatController = (function(){
 
    return{
 
+
+    displayColor: function(obj){
+        var overDues, endingRiceBals;
+
+         overDues = data.allData.cost.map(el => el.overDue);
+        if(obj.overDue < 0){
+          var  indexoverDue = overDues.indexOf(obj.overDue);
+          
+        };
+
+        endingRiceBals = data.allData.cost.map(el =>el.endingRiceBal);  
+
+         if (obj.endingRiceBal < 0){
+            var endingRiceBal = endingRiceBals.indexOf(obj.endingRiceBal);
+         };
+         
+         return{
+             overDue:indexoverDue,
+             endingRiceBal: endingRiceBal
+         }
+         
+     },
 
 
        addData: function(obj, input){
@@ -95,9 +117,9 @@ var CalculatController = (function(){
             beginingTotalRiceBal: beginingTotalRiceBal,
             totalEndingRiceBal: totalEndingRiceBal
 
-        }
+            }
 
- },
+        },
 
         calTolCost: function(obj){
             var totalMarCost, milRat, fixedMil, totalMilCost, totalMilCost, extCost, totalCost, overDue, endingRiceBal, id;
@@ -108,7 +130,7 @@ var CalculatController = (function(){
                 totalMilCost = milRat * (obj.inputPerSonMil > 64 ? obj.inputPerSonMil = obj.inputPerSonMil : 65);
                 extCost = obj.inputExtCost / obj.inputTotalMember;
                 totalCost = totalMilCost + extCost;
-                overDue = obj.inputCashPament - totalCost;
+                overDue =  obj.inputCashPament - totalCost  ;
                 endingRiceBal = obj.inputPerRichBalance - obj.inputPerSonMil;
 
                 id = list.length + 1;
@@ -203,29 +225,65 @@ var UIController = (function(){
         },
 
         clearFields: function(){
-                 var fields = document.querySelectorAll(".persone_data .form-control");
+                
+            var fields = document.querySelectorAll(".persone_data .form-control");
                  fields.forEach((el, i) => {
                       el.value = "";
+                      
                      fields[0].focus();
                  });
-
         },
+
+        
+        color: function(index){
+
+            var nameFields = document.querySelectorAll(".fname");
+            nameFieldsArr = Array.prototype.slice.call(nameFields);
+
+            if(index.overDue >=0){
+                var fieldsOverDue = document.querySelectorAll(".over_due");
+                fieldsOverDueArr = Array.prototype.slice.call(fieldsOverDue);
+                fieldsOverDueArr[index.overDue].style.color = "red";
+               
+                nameFieldsArr[index.overDue].style.color = "red";
+            }
+
+            if(index.endingRiceBal >=0){
+                var fields =  document.querySelectorAll(".endning_rice_balance");
+            fieldsArr = Array.prototype.slice.call(fields);
+             fieldsArr[index.endingRiceBal].style.color = "red";
+
+             nameFieldsArr[index.endingRiceBal].style.color = "red";
+
+            };
+             
+
+
+            
+            
+         },
+
+      
 
         displayTotalCost: function(obj, id){
 
            
             document.querySelector(".mamber").textContent= id.id;
              document.querySelector(".personeMil").textContent= obj.totalPsMil;
-            document.querySelector(".totalFixMil").textContent= obj.totalFxMil;
+             document.querySelector(".totalFixMil").textContent= obj.totalFxMil;
              document.querySelector(".totalMil_cost").textContent= Math.round(obj.totalMilCost);
              document.querySelector(".total_extal_cost").textContent= Math.round(obj.totalExtCost); 
              document.querySelector(".totalCost").textContent= Math.round(obj.totalCost); 
              document.querySelector(".total_cash").textContent= obj.totalCash; 
-             document.querySelector(".total_overdue").textContent= obj.totalOverDue; 
+             document.querySelector(".total_overdue").textContent= Math.round(obj.totalOverDue); 
              document.querySelector(".begining_total_rich").textContent= obj.beginingTotalRiceBal;
              document.querySelector(".ending_total_rich").textContent= obj.totalEndingRiceBal;            
-                          
+            
+             
+
+                       
          },
+
          displayTime: function(){
              var now, year;
               now = new Date();
@@ -247,15 +305,6 @@ var UIController = (function(){
 var Controller = (function(CalCtrl, UICtrl){
 
 
-    //    document.querySelector(".btn").addEventListener("click", function(){
-    //       var input = UICtrl.getInput();
-    //       console.log(input);
-    //       CalCtrl.adItem(input);
-    //       var cost = CalCtrl.calTolCost(input);
-    //             UICtrl.addListItem(cost, input);
-         
-
-    //    });
     var addEventListener = function(){
                 document.querySelector(".btn").addEventListener("click", CtrlAddItem);
        
@@ -272,20 +321,22 @@ var Controller = (function(CalCtrl, UICtrl){
 
 
         var input = UICtrl.getInput();
-       if(input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost) && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) ){
-               
-       };
-
+       if(!isNaN(input.inputTotalMember) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost)  && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) && input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputPerRichBalance)  ){
+         
        var cost = CalCtrl.calTolCost(input);
-       UICtrl.addListItem(cost, input);
-       CalCtrl.addData(cost, input);
-       var total = CalCtrl.calTotal();
-       
+            UICtrl.addListItem(cost, input);
+            CalCtrl.addData(cost, input);
+            var total = CalCtrl.calTotal();
 
-       UICtrl.displayTotalCost(total, cost);
 
-      UICtrl.clearFields();
-        console.log(cost);
+            UICtrl.displayTotalCost(total, cost);
+
+            UICtrl.clearFields();
+             var index = CalCtrl.displayColor(cost);
+             UICtrl.color(index);
+            
+          };
+
        };
        
 
