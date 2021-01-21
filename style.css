@@ -12,8 +12,24 @@ body{
 }
 
 
+
+/***** 
+.messManagerdetials{
+    position: absolute;
+    right: 20px;
+    top: 136px;
+    
+
+}
+.messManagerdetials h5, h5.time{
+    font-weight: bold;
+    color: black !important;
+} 
+
+****/
+
 .form-group{
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 
