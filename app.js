@@ -37,14 +37,14 @@ var CalculatController = (function(){
 
          overDues = data.allData.cost.map(el => el.overDue);
         if(obj.overDue < 0){
-          var  indexoverDue = overDues.indexOf(obj.overDue);
+          var  indexoverDue = overDues.lastIndexOf(obj.overDue);
           
         };
 
         endingRiceBals = data.allData.cost.map(el =>el.endingRiceBal);  
 
          if (obj.endingRiceBal < 0){
-            var endingRiceBal = endingRiceBals.indexOf(obj.endingRiceBal);
+            var endingRiceBal = endingRiceBals.lastIndexOf(obj.endingRiceBal);
          };
          
          return{
