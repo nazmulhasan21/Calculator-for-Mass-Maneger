@@ -25,8 +25,8 @@ var CalculatController = (function(){
        allData:{
            cost:[],
            input:[]
-       }
-   };
+                }
+            };
    var list = [];
 
    return{
@@ -106,7 +106,7 @@ var CalculatController = (function(){
                 milRat = totalMarCost / obj.inputTotalMil;
                 fixedMil = (obj.inputPerSonMil >64 ? fixedMil = obj.inputPerSonMil : fixedMil = 65);
                 totalMilCost = milRat * (obj.inputPerSonMil > 64 ? obj.inputPerSonMil = obj.inputPerSonMil : 65);
-                extCost = obj.inputExtCost / 23;
+                extCost = obj.inputExtCost / obj.inputTotalMember;
                 totalCost = totalMilCost + extCost;
                 overDue = obj.inputCashPament - totalCost;
                 endingRiceBal = obj.inputPerRichBalance - obj.inputPerSonMil;
@@ -154,7 +154,8 @@ var UIController = (function(){
         inputExtCost: ".total_exta_cost",
         inputCashPament: ".total_pament",
         list_contaner: ".list_contaner",
-        inputPerRich_balance: ".perRice_balance"
+        inputPerRich_balance: ".perRice_balance",
+        inputTotalMember: ".total_member"
        
 
     };
@@ -171,6 +172,7 @@ var UIController = (function(){
                 inputExtCost: parseInt(document.querySelector(DOMString.inputExtCost).value),
                 inputCashPament: parseInt(document.querySelector(DOMString.inputCashPament).value),
                 inputPerRichBalance: parseInt(document.querySelector(DOMString.inputPerRich_balance).value),
+                inputTotalMember: parseInt(document.querySelector(DOMString.inputTotalMember).value)
 
                 
             };
@@ -179,7 +181,7 @@ var UIController = (function(){
         addListItem:function(obj, input){
            
             var html, newHtml;
-            html = '<tr id="%id%"><td>%id%</td><td class="fname">%fname%</td><td class="persone_mil">%persone_mil% </td><td class="fixed_mil">%fixed_mil%</td><td class="mil_rat">%mil_rat%</td><td class="total_mil_cost">%total_mil_cost%</td><td class="exta_cost">%exta_cost%</td><td class="total_cost">%total_cost%</td><td class ="cash_pament"> %cashpament% </td><td class ="over_due"> %overdue% </td><td class ="begining_rice_balance"> %begining_rice_balance% </td><td class ="endning_rice_balance"> %endning_rice_balance% </td></tr>'
+            html = '<tr id="%id%"><td>%id%</td><td class="fname" colspan="3">%fname%</td><td class="persone_mil">%persone_mil% </td><td class="fixed_mil">%fixed_mil%</td><td class="mil_rat">%mil_rat%</td><td class="total_mil_cost">%total_mil_cost%</td><td class="exta_cost">%exta_cost%</td><td class="total_cost">%total_cost%</td><td class ="cash_pament"> %cashpament% </td><td class ="over_due"> %overdue% </td><td class ="begining_rice_balance"> %begining_rice_balance% </td><td class ="endning_rice_balance"> %endning_rice_balance% </td></tr>'
 
             newHtml = html.replace("%id%", obj.id);
             newHtml = newHtml.replace("%id%", obj.id);
@@ -200,6 +202,15 @@ var UIController = (function(){
             document.querySelector(DOMString.list_contaner).insertAdjacentHTML("beforeend", newHtml);
         },
 
+        clearFields: function(){
+                 var fields = document.querySelectorAll(".persone_data .form-control");
+                 fields.forEach((el, i) => {
+                      el.value = "";
+                     fields[0].focus();
+                 });
+
+        },
+
         displayTotalCost: function(obj, id){
 
            
@@ -214,7 +225,19 @@ var UIController = (function(){
              document.querySelector(".begining_total_rich").textContent= obj.beginingTotalRiceBal;
              document.querySelector(".ending_total_rich").textContent= obj.totalEndingRiceBal;            
                           
-         }
+         },
+         displayTime: function(){
+             var now, year;
+              now = new Date();
+              month = now.getMonth();
+              year = now.getFullYear();
+              months =  ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+              time = months[month] + " " + year;
+            
+
+              document.querySelectorAll(".time").forEach(el => el.textContent = time);
+            }
+
    
     };
 
@@ -260,6 +283,8 @@ var Controller = (function(CalCtrl, UICtrl){
        
 
        UICtrl.displayTotalCost(total, cost);
+
+      UICtrl.clearFields();
         console.log(cost);
        };
        
@@ -274,6 +299,8 @@ var Controller = (function(CalCtrl, UICtrl){
         init:function(){
             console.log("I am start");
             addEventListener();
+             //displytime
+            UICtrl.displayTime();
         }
     }
   

@@ -1,15 +1,35 @@
 body{
     margin: auto;
     background:url(slider2.jpeg);
-    background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    color: aqua;
+    position: relative;
 }
+
 * {
     color:#00ffa1;
     
 }
+
+
+
+.messManagerdetials{
+    position: absolute;
+    right: 20px;
+    top: 136px;
+    
+
+}
+.messManagerdetials h5, h5.time{
+    font-weight: bold;
+    color: black !important;
+}
+
+.form-group{
+    margin-left: 10px;
+}
+
+
 
 label{
     font-weight: bold;
@@ -18,5 +38,6 @@ label{
     background: transparent;
 }
 .btn{
+    font-weight: bold;
     color: #00ffa1;
 }
