@@ -36,13 +36,14 @@ var CalculatController = (function(){
         var overDues, endingRiceBals;
 
          overDues = data.allData.cost.map(el => el.overDue);
+       
         if(obj.overDue < 0){
           var  indexoverDue = overDues.lastIndexOf(obj.overDue);
           
         };
 
         endingRiceBals = data.allData.cost.map(el =>el.endingRiceBal);  
-
+       
          if (obj.endingRiceBal < 0){
             var endingRiceBal = endingRiceBals.lastIndexOf(obj.endingRiceBal);
          };
@@ -254,6 +255,7 @@ var UIController = (function(){
              fieldsArr[index.endingRiceBal].style.color = "red";
 
              nameFieldsArr[index.endingRiceBal].style.color = "red";
+            
 
             };
              
@@ -319,24 +321,30 @@ var Controller = (function(CalCtrl, UICtrl){
 
        var CtrlAddItem = function(){
 
+        var input, cost, total, index; 
 
-        var input = UICtrl.getInput();
-       if(!isNaN(input.inputTotalMember) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost)  && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) && input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputPerRichBalance)  ){
-         
-       var cost = CalCtrl.calTolCost(input);
+
+         input = UICtrl.getInput();
+         cost = CalCtrl.calTolCost(input);
+       if(!isNaN(input.inputTotalMember) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost)  && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) && input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputPerRichBalance) && (input.inputTotalMember >= cost.id)  ){
             UICtrl.addListItem(cost, input);
+
             CalCtrl.addData(cost, input);
-            var total = CalCtrl.calTotal();
+            total = CalCtrl.calTotal();
 
 
             UICtrl.displayTotalCost(total, cost);
 
             UICtrl.clearFields();
-             var index = CalCtrl.displayColor(cost);
-             UICtrl.color(index);
+            index = CalCtrl.displayColor(cost);
+            UICtrl.color(index);
+        }; 
+         
+  
             
-          };
-
+            
+          
+          
        };
        
 
