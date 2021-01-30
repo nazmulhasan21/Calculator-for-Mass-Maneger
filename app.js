@@ -335,7 +335,7 @@ var Controller = (function(CalCtrl, UICtrl){
                document.querySelector(".persone_data").style.display = "none";
        }else{
         document.querySelector(".persone_data").style.display = "block";
-    }
+    };
            
                
            
