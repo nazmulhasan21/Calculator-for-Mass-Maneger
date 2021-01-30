@@ -133,6 +133,7 @@ var CalculatController = (function(){
                 totalCost = totalMilCost + extCost;
                 overDue =  obj.inputCashPament - totalCost  ;
                 endingRiceBal = obj.inputPerRichBalance - obj.inputPerSonMil;
+                endingRiceBal = (obj.inputPerRichBalance - obj.inputExtRice)- obj.inputPerSonMil;
 
                 id = list.length + 1;
 
@@ -178,7 +179,8 @@ var UIController = (function(){
         inputCashPament: ".total_pament",
         list_contaner: ".list_contaner",
         inputPerRich_balance: ".perRice_balance",
-        inputTotalMember: ".total_member"
+        inputTotalMember: ".total_member",
+        inputExtRice: ".ext_rice"
        
 
     };
@@ -195,7 +197,8 @@ var UIController = (function(){
                 inputExtCost: parseInt(document.querySelector(DOMString.inputExtCost).value),
                 inputCashPament: parseInt(document.querySelector(DOMString.inputCashPament).value),
                 inputPerRichBalance: parseInt(document.querySelector(DOMString.inputPerRich_balance).value),
-                inputTotalMember: parseInt(document.querySelector(DOMString.inputTotalMember).value)
+                inputTotalMember: parseInt(document.querySelector(DOMString.inputTotalMember).value),
+                inputExtRice: parseInt(document.querySelector(DOMString.inputExtRice).value)
 
                 
             };
