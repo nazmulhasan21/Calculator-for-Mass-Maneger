@@ -331,7 +331,7 @@ var Controller = (function(CalCtrl, UICtrl){
          cost = CalCtrl.calTolCost(input);
        if(!isNaN(input.inputTotalMember) && !isNaN(input.inputTotalMil) && !isNaN(input.inputTotalMarCost)  && !isNaN(input.inputTotalSmlCost) && !isNaN(input.inputExtCost) && input.inputName !=="" && !isNaN(input.inputPerSonMil) && !isNaN(input.inputPerRichBalance) && (input.inputTotalMember >= cost.id)  ){
             UICtrl.addListItem(cost, input);
-           if (input.inputTotalMember >= cost.id){
+           if (input.inputTotalMember = cost.id){
                document.querySelector(".persone_data").style.display = "none";
        };
                
