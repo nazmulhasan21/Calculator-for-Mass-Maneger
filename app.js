@@ -333,7 +333,10 @@ var Controller = (function(CalCtrl, UICtrl){
             UICtrl.addListItem(cost, input);
            if (input.inputTotalMember = cost.id){
                document.querySelector(".persone_data").style.display = "none";
-       };
+       }else{
+        document.querySelector(".persone_data").style.display = "block";
+    }
+           
                
            
 
